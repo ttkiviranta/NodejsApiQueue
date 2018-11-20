@@ -1,13 +1,14 @@
 ﻿const axios = require('axios');
 const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
+var headers = require('./parse_headers.js');
 //const ora = require('ora');
 var now = require("performance-now");
 var MAX_RUNS_PER_WINDOW = args.m;
 var RUN_WINDOW = args.w;
 
 var circularQueue = []; //Urls which will call in current run window. for example 6 times per secund, minute, hour...
- var originalUnshift = circularQueue.unshift;
+var originalUnshift = circularQueue.unshift;
 
 var config = {
     headers: { 'X-My-Custom-Header': 'Header-Value' }
@@ -70,28 +71,6 @@ module.exports = () => {
             errUrls.forEach(doApi_Get);
             errUrls = [];
         }
-
-    }
-
-
-    function parse_headers(headers, tag) {
-        var searchStr = String(tag);
-        var myJSON, obj;
-        var result = [];
-        var tagFind = false;
-        myJSON = JSON.stringify(headers);
-        obj = JSON.parse(myJSON);
-
-        for (var l in obj) {
-            if (obj.hasOwnProperty(l)) {
-                if (l === tag) {
-                    result.push(l + ': ' + obj[l]);
-                    tagFind = true;
-                }
-            }
-        }
-
-        return result[0];
 
     }
 
@@ -251,8 +230,8 @@ module.exports = () => {
                 var n = d.toLocaleTimeString() + ":" + d.getMilliseconds();
                 console.log(n+" - "+ "Count " + count + ": " + response.data + " Cumulative time: " + (t1 - t0) + " ms.");
                 efectTime = efectTime + (t1 - t0);
-                console.log(parse_headers(response.headers, 'x-ratelimit-limit'));
-                console.log(parse_headers(response.headers, 'x-ratelimit-remaining'));
+                console.log(headers.parse_headers(response.headers, 'x-ratelimit-limit'));
+                console.log(headers.parse_headers(response.headers, 'x-ratelimit-remaining'));
                 var res = isAllDone();
             })
             .catch(function (error) {
@@ -266,10 +245,10 @@ module.exports = () => {
                     console.log(n + " - " + "***ERR " + errCount + "  BEGIN *** Response status: " + error.response.status);
                     console.log(error.response.data);
                     //  console.log(error.response.headers);
-                    console.log(parse_headers(error.response.headers, 'x-ratelimit-limit'));
-                    console.log(parse_headers(error.response.headers, 'x-ratelimit-remaining'));
-                    console.log(parse_headers(error.response.headers, 'retry-after'));
-                    var str = parse_headers(error.response.headers, 'retry-after').toString();
+                    console.log(headers.parse_headers(error.response.headers, 'x-ratelimit-limit'));
+                    console.log(headers.parse_headers(error.response.headers, 'x-ratelimit-remaining'));
+                    console.log(headers.parse_headers(error.response.headers, 'retry-after'));
+                    var str = headers.parse_headers(error.response.headers, 'retry-after').toString();
                     var resVal = str.split(":", 2);
                     retry_after_Time = parseInt(resVal[1]);  
                     console.log("***ERR END*** " );
