@@ -13,7 +13,7 @@
     --count, -c ...... how many times make url call
     --max, -m ....     max run per window
     --window, -w ......time window in milli secunds`,
-}
+};
 
 module.exports = (args) => {
     const subCmd = args._[0] === 'help'

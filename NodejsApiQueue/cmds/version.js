@@ -2,4 +2,4 @@
 
 module.exports = (args) => {
     console.log(`v${version}`);
-}
+};

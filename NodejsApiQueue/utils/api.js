@@ -184,7 +184,7 @@ module.exports = () => {
 
         function timeToWait() {
             var ttw = RUN_WINDOW - timeForMaxRuns();
-            temp = ttw < 0 ? 0 : ttw;
+            //temp = ttw < 0 ? 0 : ttw;
            // console.log("*****timeToWait:" + temp);
             return ttw < 0 ? 0 : ttw;
         }

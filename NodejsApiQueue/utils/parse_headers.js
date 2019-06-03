@@ -15,6 +15,6 @@
     }
 
     return result[0];
-}
+};
 
 exports.parse_headers = parse_headers;
