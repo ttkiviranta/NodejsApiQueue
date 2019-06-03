@@ -47,9 +47,7 @@
     <Compile Include="utils\parse_headers.js">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="Architecture.png" />
     <Content Include="package.json" />
-    <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cmds\" />
